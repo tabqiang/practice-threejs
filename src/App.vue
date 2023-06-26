@@ -1,10 +1,19 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view />
+  <a-layout style="height: 100%">
+    <a-layout-sider>
+      <side-menu></side-menu>
+    </a-layout-sider>
+    <a-layout>
+      <a-layout-header>
+        <div class="title">THREE JS PRACTICE</div>
+      </a-layout-header>
+      <a-layout-content><router-view /></a-layout-content>
+    </a-layout>
+  </a-layout>
 </template>
+<script setup>
+import SideMenu from './components/SideMenu.vue'
+</script>
 
 <style lang="less">
 #app {
@@ -13,18 +22,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  height: 100vh;
+  width: 100vw;
 }
 
-nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
+.title {
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
 }
 </style>
