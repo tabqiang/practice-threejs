@@ -45,7 +45,7 @@ scene.add(plane)
 // 环境光
 const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
 scene.add(light)
-//直线光源
+// 直线光源
 const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
 directionalLight.position.set(10, 5, 0)
 directionalLight.castShadow = true
@@ -65,14 +65,25 @@ directionalLight.shadow.camera.left = -5
 directionalLight.shadow.camera.right = 5
 
 scene.add(directionalLight)
-gui
-  .add(directionalLight.shadow.camera, 'near')
-  .min(0)
-  .max(10)
-  .step(0.1)
-  .onChange(() => {
-    directionalLight.shadow.camera.updateProjectionMatrix()
-  })
+
+const lightBall = new THREE.PointLight('red', 0.5)
+scene.add(lightBall)
+const smallBall = new THREE.Mesh(
+  new THREE.SphereBufferGeometry(0.1, 10, 10),
+  new THREE.MeshBasicMaterial({ color: 'red' })
+)
+smallBall.add(lightBall)
+smallBall.position.set(2, 2, 2)
+scene.add(smallBall)
+
+// gui
+//   .add(directionalLight.shadow.camera, 'near')
+//   .min(0)
+//   .max(10)
+//   .step(0.1)
+//   .onChange(() => {
+//     directionalLight.shadow.camera.updateProjectionMatrix()
+//   })
 
 // 初始化渲染器
 const renderer = new THREE.WebGLRenderer()
@@ -97,8 +108,10 @@ scene.add(axesHelper)
 const clock = new THREE.Clock()
 
 function render() {
-  console.log(33)
-  // controls.update();
+  let time = clock.getElapsedTime()
+  smallBall.position.x = Math.sin(time) * 3
+  smallBall.position.z = Math.cos(time) * 3
+  controls.update()
   renderer.render(scene, camera)
   //   渲染下一帧的时候就会调用render函数
   requestAnimationFrame(render)
