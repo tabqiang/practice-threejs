@@ -4,13 +4,15 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-const containerRef = ref(null)
+
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 import gsap from 'gsap'
 
 import * as dat from 'dat.gui'
+
+const containerRef = ref(null)
 
 const gui = new dat.GUI()
 const scene = new THREE.Scene()
@@ -23,7 +25,7 @@ const camera = new THREE.PerspectiveCamera(
 camera.position.set(0, 0, 10)
 scene.add(camera)
 
-const sphereGeometry = new THREE.SphereBufferGeometry(1, 20, 20)
+const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
 const material = new THREE.MeshStandardMaterial()
 const sphere = new THREE.Mesh(sphereGeometry, material)
 // 投射阴影
@@ -31,7 +33,7 @@ sphere.castShadow = true
 scene.add(sphere)
 
 // 创建平面
-const planeGeometry = new THREE.PlaneBufferGeometry(10, 10)
+const planeGeometry = new THREE.PlaneGeometry(10, 10)
 const plane = new THREE.Mesh(planeGeometry, material)
 plane.position.set(0, -1, 0)
 plane.rotation.x = -Math.PI / 2
@@ -69,7 +71,7 @@ scene.add(directionalLight)
 const lightBall = new THREE.PointLight('red', 0.5)
 scene.add(lightBall)
 const smallBall = new THREE.Mesh(
-  new THREE.SphereBufferGeometry(0.1, 10, 10),
+  new THREE.SphereGeometry(0.1, 10, 10),
   new THREE.MeshBasicMaterial({ color: 'red' })
 )
 smallBall.add(lightBall)
