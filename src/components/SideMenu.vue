@@ -47,6 +47,11 @@ const menuData = shallowRef([
     label: 'DEMO02',
     url: '/demo02',
     icon: AppstoreOutlined
+  },
+  {
+    label: 'CLIP',
+    url: '/clip',
+    icon: AppstoreOutlined
   }
 ])
 const router = useRouter()
