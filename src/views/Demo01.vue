@@ -26,15 +26,22 @@ camera.position.set(0, 0, 10)
 scene.add(camera)
 
 const sphereGeometry = new THREE.SphereGeometry(1, 20, 20)
-const material = new THREE.MeshStandardMaterial()
-const sphere = new THREE.Mesh(sphereGeometry, material)
+const loader = new THREE.TextureLoader()
+const sphereMaterial = new THREE.MeshStandardMaterial({
+  map: loader.load(require('../assets/textures/earthmap2k.jpg'))
+})
+const sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
 // 投射阴影
 sphere.castShadow = true
+console.log(sphere)
 scene.add(sphere)
 
 // 创建平面
 const planeGeometry = new THREE.PlaneGeometry(10, 10)
-const plane = new THREE.Mesh(planeGeometry, material)
+const planeMaterial = new THREE.MeshLambertMaterial({
+  map: loader.load(require('../assets/textures/wall.jpg'))
+})
+const plane = new THREE.Mesh(planeGeometry, planeMaterial)
 plane.position.set(0, -1, 0)
 plane.rotation.x = -Math.PI / 2
 
@@ -42,37 +49,37 @@ plane.rotation.x = -Math.PI / 2
 plane.receiveShadow = true
 scene.add(plane)
 
-// 灯光
+//
 
 // 环境光
-const light = new THREE.AmbientLight(0xffffff, 0.5) // soft white light
+const light = new THREE.AmbientLight('0xffffff', 0.3) // soft white light
 scene.add(light)
 // 直线光源
-const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
-directionalLight.position.set(10, 5, 0)
-directionalLight.castShadow = true
+// const directionalLight = new THREE.DirectionalLight(0xffffff, 0.5)
+// directionalLight.position.set(10, 5, 0)
+// directionalLight.castShadow = true
 
-// 设置阴影贴图模糊度
-directionalLight.shadow.radius = 20
-// 设置阴影贴图的分辨率
-directionalLight.shadow.mapSize.set(4096, 4096)
-// console.log(directionalLight.shadow);
+// // 设置阴影贴图模糊度
+// directionalLight.shadow.radius = 20
+// // 设置阴影贴图的分辨率
+// directionalLight.shadow.mapSize.set(4096, 4096)
+// // console.log(directionalLight.shadow);
 
-// 设置平行光投射相机的属性
-directionalLight.shadow.camera.near = 0.5
-directionalLight.shadow.camera.far = 500
-directionalLight.shadow.camera.top = 5
-directionalLight.shadow.camera.bottom = -5
-directionalLight.shadow.camera.left = -5
-directionalLight.shadow.camera.right = 5
+// // 设置平行光投射相机的属性
+// directionalLight.shadow.camera.near = 0.5
+// directionalLight.shadow.camera.far = 500
+// directionalLight.shadow.camera.top = 5
+// directionalLight.shadow.camera.bottom = -5
+// directionalLight.shadow.camera.left = -5
+// directionalLight.shadow.camera.right = 5
 
-scene.add(directionalLight)
+// scene.add(directionalLight)
 
-const lightBall = new THREE.PointLight('red', 0.5)
+const lightBall = new THREE.PointLight('0xffffff', 1)
 scene.add(lightBall)
 const smallBall = new THREE.Mesh(
   new THREE.SphereGeometry(0.1, 10, 10),
-  new THREE.MeshBasicMaterial({ color: 'red' })
+  new THREE.MeshBasicMaterial()
 )
 smallBall.add(lightBall)
 smallBall.position.set(2, 2, 2)
@@ -93,6 +100,7 @@ const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight)
 // 开启场景中的阴影贴图
 renderer.shadowMap.enabled = true
+// renderer.setClearColor('#ffffff')
 
 onMounted(() => {
   containerRef.value.appendChild(renderer.domElement)
@@ -113,6 +121,7 @@ function render() {
   let time = clock.getElapsedTime()
   smallBall.position.x = Math.sin(time) * 3
   smallBall.position.z = Math.cos(time) * 3
+
   controls.update()
   renderer.render(scene, camera)
   //   渲染下一帧的时候就会调用render函数
